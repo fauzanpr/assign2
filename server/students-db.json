@@ -1,0 +1,12 @@
+{
+  "student": [
+    {
+      "fullname": "Fauzan",
+      "birthDate": "",
+      "gender": "Male",
+      "faculty": false,
+      "programStudy": "",
+      "id": 1
+    }
+  ]
+}

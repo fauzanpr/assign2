@@ -1,10 +1,26 @@
+import { useEffect, useState } from "react";
+
 const Table = (props) => {
+  const [students, setStudents] = useState(props.students);
+  const [change, setChange] = useState(false);
+
   const deleteBtnHandler = async (e, id) => {
     e.preventDefault();
     await fetch(`http://localhost:3001/student/${id}`, {
       method: "DELETE",
     });
+    setChange(!change);
   };
+
+  useEffect(() => {
+    const reRender = async () => {
+      const res = await fetch("http://localhost:3001/student");
+      if (!res) return false;
+      const datas = await res.json();
+      setStudents(datas);
+    };
+    reRender();
+  });
 
   return (
     <>
@@ -21,8 +37,8 @@ const Table = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.students &&
-            props.students.map((student) => {
+          {students &&
+            students.map((student) => {
               return (
                 <tr key={student.id} className="student-data-row">
                   <td>{student.id}</td>

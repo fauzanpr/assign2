@@ -6,20 +6,43 @@ const App = () => {
   // TODO: answer here
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [reload, setReload] = useState(false);
+
+  const pleaseReload = (decision) => {
+    if (decision) {
+      setReload(!reload);
+      decision = false;
+    }
+  };
   useEffect(() => {
+    console.log("msokkkk");
     const getData = async () => {
-      await fetch("http://localhost:3001/student")
-        .then((res) => res.json())
-        .then((res) => {
-          setStudents(res);
-          setLoading(false);
-        });
+      try {
+        const res = await fetch("http://localhost:3001/student");
+        const datas = await res.json();
+        console.log(datas);
+        setStudents(datas);
+        setLoading(false);
+      } catch (e) {
+        console.log(e.massage);
+        setLoading(false);
+      }
+      // await fetch("")
+      //   .then((res) => {
+      //     if (!res.ok) return false;
+      //     res.json();
+      //   })
+      //   .then((res) => {
+      //     setStudents(res);
+      //     setLoading(false);
+      //   })
+      //   .catch((e) => console.log(e));
     };
     getData();
-  });
+  }, [reload]);
   return (
     <>
-      <Form />
+      <Form onSubmit={pleaseReload} />
       {loading ? <p>Loading ...</p> : <Table students={students} />}
     </>
   );

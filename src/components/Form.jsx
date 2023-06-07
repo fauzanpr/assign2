@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const Form = () => {
+const Form = ({ onSubmit }) => {
   const [fullname, setFullname] = useState("");
   const [date, setDate] = useState("");
   const [gender, setGender] = useState("Male");
   const [prody, setPrody] = useState("Ekonomi");
+
+  const [change, setChange] = useState(false);
 
   const cekFaculty = (prody) => {
     if (prody === "Ekonomi" || prody === "Manajemen" || prody === "Akuntansi")
@@ -28,20 +30,38 @@ const Form = () => {
   const submitBtnHandler = async (e) => {
     e.preventDefault();
     // const faculty = cekFaculty(prody) || 'Fakultas Ekonomi';
-    await fetch("http://localhost:3001/student", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        fullname,
-        birthDate: date,
-        gender,
-        faculty: cekFaculty(prody) || 'Fakultas Ekonomi',
-        programStudy: prody,
-      }),
-    });
+    const dataPost = {
+      fullname,
+      birthDate: date,
+      gender,
+      faculty: cekFaculty(prody) || 'Fakultas Ekonomi',
+      programStudy: prody
+    };
+    try {
+      await fetch("http://localhost:3001/student", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataPost),
+      }).then(res => {
+        if (res.ok === false) return;
+        onSubmit(true);
+      })
+    } catch (e) {
+      console.log(e);
+      return;
+    }
   };
+
+  // useEffect(() => {
+  //   // const reRender = async () => {
+  //   //   const res = await fetch('http://localhost:3001/student');
+  //   //   if (!res) return;
+  //   //   const datas = await res.json();
+  //   // };
+  // }, change);
+
   return (
     <>
       <form id="form-student">
@@ -83,9 +103,9 @@ const Form = () => {
             data-testid="prody"
             onChange={(e) => setPrody(e.target.value)}
           >
-            <option value="ekonomi">Ekonomi</option>
-            <option value="manajemen">Manajemen</option>
-            <option value="akuntansi">Akuntansi</option>
+            <option value="Ekonomi">Ekonomi</option>
+            <option value="Manajemen">Manajemen</option>
+            <option value="Akuntansi">Akuntansi</option>
             <option value="AdministrasiPublik">Administrasi Publik</option>
             <option value="AdministrasiBisnis">Administrasi Bisnis</option>
             <option value="HubunganInternasional">

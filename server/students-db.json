@@ -1,11 +1,11 @@
 {
   "student": [
     {
-      "fullname": "Fauzan",
-      "birthDate": "",
+      "fullname": "Fauzan Pradana",
+      "birthDate": "2023-06-06",
       "gender": "Male",
-      "faculty": false,
-      "programStudy": "",
+      "faculty": "Fakultas Ekonomi",
+      "programStudy": "Ekonomi",
       "id": 1
     }
   ]
